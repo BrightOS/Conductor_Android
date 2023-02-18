@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/nav_roadmap"
+        android:icon="@drawable/ic_mode_of_travel"
+        android:title="@string/roadmap"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/nav_events"
+        android:icon="@drawable/ic_event"
+        android:title="@string/events"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/nav_network"
+        android:icon="@drawable/ic_diversity"
+        android:title="@string/network"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_face_6"
+        android:title="@string/profile"
+        app:showAsAction="ifRoom" />
+</menu>

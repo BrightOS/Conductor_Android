@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Conductor</string>
+    <string name="roadmap">Roadmap</string>
+    <string name="events">События</string>
+    <string name="network">Сеть</string>
+    <string name="profile">Профиль</string>
+</resources>

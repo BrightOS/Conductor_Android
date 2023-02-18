@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_roadmap"
+    app:startDestination="@id/roadmapFragment">
+
+    <fragment
+        android:id="@+id/roadmapFragment"
+        android:name="ru.myrosmol.conductor.ui.roadmap.RoadmapFragment"
+        android:label="RoadmapFragment"
+        tools:layout="@layout/fragment_roadmap" >
+        <action
+            android:id="@+id/action_roadmapFragment_to_taskFragment"
+            app:destination="@id/taskFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskFragment"
+        android:name="ru.myrosmol.conductor.ui.task.TaskFragment"
+        android:label="TaskFragment"
+        tools:layout="@layout/fragment_task">
+
+    </fragment>
+</navigation>
