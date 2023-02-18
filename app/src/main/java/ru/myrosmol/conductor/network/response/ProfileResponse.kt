@@ -17,5 +17,6 @@ class ProfileResponse(
     @SerializedName("whatsapp") val whatsapp: String?,
     @SerializedName("vk") val vk: String?,
     @SerializedName("roadmap_int_id") val roadmapId: Int?,
-    @SerializedName("division_int_id") val divisionId: Int?
+    @SerializedName("division_int_id") val divisionId: Int?,
+    @SerializedName("division_title") val divisionTitle: String?
 )

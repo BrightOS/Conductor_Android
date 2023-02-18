@@ -49,18 +49,18 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
-        println("token: ${preferenceRepository.token}")
-        if (preferenceRepository.token.isBlank()) {
-            startActivity(Intent(this, AuthActivity::class.java))
-            finish()
-        }
-
         retrofitService.myProfile(preferenceRepository.token) { response, code ->
             if (code != 200) {
                 preferenceRepository.token = ""
                 startActivity(Intent(this, AuthActivity::class.java))
                 finish()
             }
+        }
+
+        println("token: ${preferenceRepository.token}")
+        if (preferenceRepository.token.isBlank()) {
+            startActivity(Intent(this, AuthActivity::class.java))
+            finish()
         }
 
         binding = ActivityMainBinding.inflate(layoutInflater)

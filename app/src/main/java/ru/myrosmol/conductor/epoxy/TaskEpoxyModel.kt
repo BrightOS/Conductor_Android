@@ -51,6 +51,9 @@ abstract class TaskEpoxyModel : EpoxyModelWithHolder<TaskEpoxyModel.Holder>() {
                 TaskType.POLL -> if (passed) "Опрос пройден" else "Опрос не пройден"
             }
         )
+
+        holder.passed.isChecked = passed
+
         holder.card.setOnClickListener {
             onTaskClickedListener.onTaskClicked(taskId)
         }

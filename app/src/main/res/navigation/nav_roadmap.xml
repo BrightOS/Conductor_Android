@@ -20,5 +20,8 @@
         android:label="TaskFragment"
         tools:layout="@layout/fragment_task">
 
+        <argument
+            android:name="index"
+            app:argType="integer" />
     </fragment>
 </navigation>

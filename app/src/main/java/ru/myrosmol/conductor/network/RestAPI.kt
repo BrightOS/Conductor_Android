@@ -8,11 +8,14 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Query
 import ru.myrosmol.conductor.network.request.AuthRequest
+import ru.myrosmol.conductor.network.request.SendQuizzRequest
 import ru.myrosmol.conductor.network.response.AuthResponse
 import ru.myrosmol.conductor.network.response.DivisionResponse
+import ru.myrosmol.conductor.network.response.EventResponse
 import ru.myrosmol.conductor.network.response.MailCodeResponse
 import ru.myrosmol.conductor.network.response.ProfileResponse
 import ru.myrosmol.conductor.network.response.RoadmapResponse
+import ru.myrosmol.conductor.network.response.TaskResponse
 
 interface RestAPI {
     @POST("auth")
@@ -30,4 +33,32 @@ interface RestAPI {
 
     @GET("divisions")
     fun getDivisions(@Header("token") token: String): Call<List<DivisionResponse>>
+
+    @GET("me.get_task_by_index")
+    fun getTask(
+        @Header("token") token: String,
+        @Query("task_index") taskId: Int
+    ): Call<TaskResponse>
+
+    @POST("send_answers.send_quizz")
+    @Headers("Content-Type: application/json")
+    fun sendQuizz(
+        @Header("token") token: String,
+        @Body quizzRequest: SendQuizzRequest
+    ): Call<RoadmapResponse>
+
+    @GET("user")
+    fun getUsers(
+        @Header("token") token: String,
+        @Query("division_int_id") divisionId: Int
+    ): Call<List<ProfileResponse>>
+
+    @GET("user.by_int_id")
+    fun getUser(
+        @Header("token") token: String,
+        @Query("user_int_id") userId: Int
+    ): Call<ProfileResponse>
+
+    @GET("me.get_my_events")
+    fun myEvents(@Header("token") token: String): Call<List<EventResponse>>
 }

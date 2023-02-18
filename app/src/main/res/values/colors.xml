@@ -11,6 +11,12 @@
     <color name="primary_green">#175521</color>
     <color name="surface_green">#D4E8CF</color>
 
+    <color name="primary_red">#804758</color>
+    <color name="surface_red">#fcdde3</color>
+
+    <color name="primary_blue">#61affe</color>
+    <color name="surface_blue">#eff7ff</color>
+
     <color name="md_theme_light_primary">#6750A4</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
     <color name="md_theme_light_primaryContainer">#EADDFF</color>

@@ -31,7 +31,6 @@ class ProfileFragment : Fragment() {
     lateinit var preferenceRepository: PreferenceRepository
 
     private val profileResponse = MutableLiveData<ProfileResponse>()
-    private val divisionsList = MutableLiveData<List<DivisionResponse>>()
     var currentDivisionId = -1
 
     override fun onCreateView(
@@ -57,16 +56,7 @@ class ProfileFragment : Fragment() {
             binding.whatsapp.editText?.setText(it.whatsapp)
             binding.telegram.editText?.setText(it.telegram)
 
-            retrofitService.getDivisions(preferenceRepository.token) { response, code ->
-                if (code == 200)
-                    divisionsList.postValue(response!!)
-
-                hideLoading()
-            }
-        }
-
-        divisionsList.observe(viewLifecycleOwner) {
-            binding.divisionName.text = "${it.find { it.id == currentDivisionId }?.title}"
+            hideLoading()
         }
 
         showLoading()

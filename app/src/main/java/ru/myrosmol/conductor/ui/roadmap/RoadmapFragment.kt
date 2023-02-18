@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Response
 import ru.myrosmol.conductor.data.repository.PreferenceRepository
@@ -33,7 +35,8 @@ class RoadmapFragment : Fragment() {
 
     private val taskClickedListener = object : OnTaskClickedListener {
         override fun onTaskClicked(taskId: Int) {
-
+//            roadmapResponse.value!!.weeksRoadmap.weeks.forEach { it.days. }
+            findNavController().navigate(RoadmapFragmentDirections.actionRoadmapFragmentToTaskFragment(taskId))
         }
     }
 
@@ -48,54 +51,66 @@ class RoadmapFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        binding.roadmapRecycler.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
         roadmapResponse.observe(viewLifecycleOwner) {
             var i = 0
             binding.roadmapRecycler.withModels {
-                (it as RoadmapResponse).weeksRoadmap?.weeks?.forEach {
-                    week {
-                        id(i++)
-                        week(it.week.toString())
-                    }
-                    it.days?.forEach {
-                        it.tasks!!
-                        day {
+                if (it != null)
+                    it.weeksRoadmap?.weeks?.forEach {
+                        week {
                             id(i++)
-                            day(it.day.toString())
+                            week(it.week.toString())
                         }
-                        it.tasks.forEachIndexed { index, taskResponse ->
-                            task {
+                        it.days?.forEach {
+                            it.tasks!!
+                            day {
                                 id(i++)
-                                passed(taskResponse.completed!!)
-                                coins(taskResponse.coins!!)
-                                title(taskResponse.title)
-                                type(when (taskResponse.type) {
-                                    "auto_test" -> TaskType.AUTO
-                                    "hr_confirmation" -> TaskType.HR
-                                    else -> TaskType.POLL
-                                })
+                                day(it.day.toString())
+                            }
+                            it.tasks.forEachIndexed { index, taskResponse ->
+                                task {
+                                    id(i++)
+                                    passed(taskResponse.completed!!)
+                                    coins(taskResponse.coins!!)
+                                    title(taskResponse.title)
+                                    type(
+                                        when (taskResponse.type) {
+                                            "auto_test" -> TaskType.AUTO
+                                            "hr_confirmation" -> TaskType.HR
+                                            else -> TaskType.POLL
+                                        }
+                                    )
 
-                                taskResponse.id?.let { it1 -> taskId(it1) }
-                                onTaskClickedListener(taskClickedListener)
-                                if (index == it.tasks.size - 1)
-                                    last(true)
+                                    taskId(taskResponse.id!!)
+                                    onTaskClickedListener(taskClickedListener)
+                                    if (index == it.tasks.size - 1)
+                                        last(true)
+                                }
                             }
                         }
                     }
-                }
+                hideLoading()
             }
         }
 
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
         updateRoadmap()
-        super.onCreate(savedInstanceState)
     }
 
     fun updateRoadmap() {
+        showLoading()
         retrofitService.myRoadmap(preferenceRepository.token) { response, code ->
             roadmapResponse.postValue(response)
         }
+    }
+
+    fun showLoading() {
+        binding.loading.visibility = View.VISIBLE
+    }
+
+    fun hideLoading() {
+        binding.loading.visibility = View.GONE
     }
 
 }
