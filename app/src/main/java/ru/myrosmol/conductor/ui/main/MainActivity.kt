@@ -49,25 +49,25 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
-        retrofitService.myProfile(preferenceRepository.token) { response, code ->
-            if (code != 200) {
-                preferenceRepository.token = ""
-                startActivity(Intent(this, AuthActivity::class.java))
-                finish()
-            }
-        }
-
         println("token: ${preferenceRepository.token}")
         if (preferenceRepository.token.isBlank()) {
             startActivity(Intent(this, AuthActivity::class.java))
             finish()
+        } else {
+            retrofitService.myProfile(preferenceRepository.token) { response, code ->
+                if (code != 200) {
+                    preferenceRepository.token = ""
+                    startActivity(Intent(this, AuthActivity::class.java))
+                    finish()
+                }
+            }
+
+            binding = ActivityMainBinding.inflate(layoutInflater)
+            setContentView(binding.root)
+
+            if (savedInstanceState == null)
+                setupBottomNavigationBar()
         }
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        if (savedInstanceState == null)
-            setupBottomNavigationBar()
     }
 
 
@@ -80,6 +80,7 @@ class MainActivity : AppCompatActivity() {
         val navGraphIds = listOf(
             R.navigation.nav_roadmap,
             R.navigation.nav_events,
+            R.navigation.nav_shop,
             R.navigation.nav_network,
             R.navigation.nav_profile
         )

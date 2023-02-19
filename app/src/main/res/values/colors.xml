@@ -6,6 +6,7 @@
 
     <color name="rosmol_purple">#8c64d8</color>
     <color name="rosmol_light_purple">#F3EFFB</color>
+    <color name="rosmol_very_light_purple">#faf8fd</color>
     <color name="rosmol_green">#daef14</color>
 
     <color name="primary_green">#175521</color>

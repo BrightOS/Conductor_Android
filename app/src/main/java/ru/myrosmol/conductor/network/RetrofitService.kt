@@ -1,15 +1,16 @@
 package ru.myrosmol.conductor.network
 
-import kotlinx.coroutines.flow.callbackFlow
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.myrosmol.conductor.network.request.AuthRequest
+import ru.myrosmol.conductor.network.request.ChangeUserContactsRequest
 import ru.myrosmol.conductor.network.request.SendQuizzRequest
 import ru.myrosmol.conductor.network.response.AuthResponse
 import ru.myrosmol.conductor.network.response.DivisionResponse
 import ru.myrosmol.conductor.network.response.EventResponse
-import ru.myrosmol.conductor.network.response.MailCodeResponse
+import ru.myrosmol.conductor.network.response.IsDoneResponse
+import ru.myrosmol.conductor.network.response.ProductResponse
 import ru.myrosmol.conductor.network.response.ProfileResponse
 import ru.myrosmol.conductor.network.response.RoadmapResponse
 import ru.myrosmol.conductor.network.response.TaskResponse
@@ -28,16 +29,16 @@ class RetrofitService(val restAPI: RestAPI) {
         })
     }
 
-    fun sendMailCode(mail: String, onResult: (response: MailCodeResponse?, code: Int) -> Unit) {
-        restAPI.sendMailCode(mail).enqueue(object : Callback<MailCodeResponse> {
+    fun sendMailCode(mail: String, onResult: (response: IsDoneResponse?, code: Int) -> Unit) {
+        restAPI.sendMailCode(mail).enqueue(object : Callback<IsDoneResponse> {
             override fun onResponse(
-                call: Call<MailCodeResponse>,
-                response: Response<MailCodeResponse>
+                call: Call<IsDoneResponse>,
+                response: Response<IsDoneResponse>
             ) {
                 onResult.invoke(response.body(), response.code())
             }
 
-            override fun onFailure(call: Call<MailCodeResponse>, t: Throwable) {
+            override fun onFailure(call: Call<IsDoneResponse>, t: Throwable) {
                 t.printStackTrace()
             }
 
@@ -174,7 +175,10 @@ class RetrofitService(val restAPI: RestAPI) {
         onResult: (response: List<EventResponse>?, code: Int) -> Unit
     ) {
         restAPI.myEvents(token).enqueue(object : Callback<List<EventResponse>> {
-            override fun onResponse(call: Call<List<EventResponse>>, response: Response<List<EventResponse>>) {
+            override fun onResponse(
+                call: Call<List<EventResponse>>,
+                response: Response<List<EventResponse>>
+            ) {
                 onResult.invoke(response.body(), response.code())
             }
 
@@ -182,5 +186,65 @@ class RetrofitService(val restAPI: RestAPI) {
                 t.printStackTrace()
             }
         })
+    }
+
+    fun getAllProducts(
+        token: String,
+        onResult: (response: List<ProductResponse>?, code: Int) -> Unit
+    ) {
+        restAPI.getAllProducts(token).enqueue(object : Callback<List<ProductResponse>> {
+            override fun onResponse(
+                call: Call<List<ProductResponse>>,
+                response: Response<List<ProductResponse>>
+            ) {
+                onResult.invoke(response.body(), response.code())
+            }
+
+            override fun onFailure(call: Call<List<ProductResponse>>, t: Throwable) {
+                t.printStackTrace()
+            }
+
+        })
+    }
+
+    fun buyProduct(
+        token: String,
+        productId: Int,
+        onResult: (response: IsDoneResponse?, code: Int) -> Unit
+    ) {
+        restAPI.buyProduct(token, productId).enqueue(object : Callback<IsDoneResponse> {
+            override fun onResponse(
+                call: Call<IsDoneResponse>,
+                response: Response<IsDoneResponse>
+            ) {
+                onResult.invoke(response.body(), response.code())
+            }
+
+            override fun onFailure(call: Call<IsDoneResponse>, t: Throwable) {
+                t.printStackTrace()
+            }
+        })
+    }
+
+    fun changeUser(
+        token: String,
+        telegram: String,
+        whatsapp: String,
+        vk: String,
+        onResult: (response: IsDoneResponse?, code: Int) -> Unit
+    ) {
+        restAPI.changeUserContacts(token, ChangeUserContactsRequest(telegram, whatsapp, vk))
+            .enqueue(object : Callback<IsDoneResponse> {
+                override fun onResponse(
+                    call: Call<IsDoneResponse>,
+                    response: Response<IsDoneResponse>
+                ) {
+                    onResult.invoke(response.body(), response.code())
+                }
+
+                override fun onFailure(call: Call<IsDoneResponse>, t: Throwable) {
+                    t.printStackTrace()
+                }
+            })
     }
 }

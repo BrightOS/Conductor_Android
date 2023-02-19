@@ -63,6 +63,8 @@ class TaskFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        println("Task ${args.index}")
+
         binding.attachmentsRecycler.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
@@ -95,8 +97,14 @@ class TaskFragment : Fragment() {
                 }
             }
 
+            var description = it.text!!
+            while (description.contains("  "))
+                description = description.replace("  ", " ")
+            while (description.contains("\n\n\n"))
+                description = description.replace("\n\n\n", "\n\n")
+
             binding.title.text = it.title
-            binding.description.text = it.text
+            binding.description.text = description
 
             when (it.type) {
                 "auto_test" -> {

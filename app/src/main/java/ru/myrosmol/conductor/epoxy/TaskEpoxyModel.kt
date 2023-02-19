@@ -2,12 +2,14 @@ package ru.myrosmol.conductor.epoxy
 
 import android.annotation.SuppressLint
 import android.widget.CheckedTextView
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
+import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
 import ru.myrosmol.conductor.R
 import ru.myrosmol.conductor.ui.roadmap.OnTaskClickedListener

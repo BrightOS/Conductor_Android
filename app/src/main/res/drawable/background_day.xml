@@ -6,7 +6,7 @@
         android:right="10dp">
 
         <shape android:shape="rectangle">
-            <solid android:color="@color/rosmol_light_purple" />
+            <solid android:color="@color/rosmol_very_light_purple" />
             <corners android:topLeftRadius="15dp"
                 android:topRightRadius="15dp"/>
         </shape>

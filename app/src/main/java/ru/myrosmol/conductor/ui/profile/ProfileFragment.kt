@@ -4,17 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import ru.myrosmol.conductor.data.repository.PreferenceRepository
 import ru.myrosmol.conductor.databinding.FragmentProfileBinding
 import ru.myrosmol.conductor.network.RetrofitService
-import ru.myrosmol.conductor.network.response.DivisionResponse
 import ru.myrosmol.conductor.network.response.ProfileResponse
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 
@@ -46,7 +45,8 @@ class ProfileFragment : Fragment() {
         profileResponse.observe(viewLifecycleOwner) {
             binding.fullname.text = it.fullname
             binding.position.text = it.position
-            currentDivisionId = it.divisionId!!
+            binding.coins.text = "${it.coins}"
+            binding.division.text = it.divisionTitle
 
             val f = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
             binding.birthDate.text = DateFormat.getDateInstance(SimpleDateFormat.LONG, Locale("ru"))
@@ -59,10 +59,63 @@ class ProfileFragment : Fragment() {
             hideLoading()
         }
 
+        binding.confirmChanges.setOnClickListener {
+            updateProfile(
+                "${binding.telegram.editText?.text}",
+                "${binding.whatsapp.editText?.text}",
+                "${binding.vk.editText?.text}"
+            )
+        }
+
+        loadProfile()
+    }
+
+    fun loadProfile() {
         showLoading()
         retrofitService.myProfile(preferenceRepository.token) { response, code ->
             if (code == 200)
                 profileResponse.postValue(response!!)
+            else
+                Toast.makeText(
+                    context,
+                    "$code Произошла непредвиденная ошибка.",
+                    Toast.LENGTH_SHORT
+                ).show()
+        }
+    }
+
+    fun updateProfile(telegram: String, whatsApp: String, vk: String) {
+        showLoading()
+        retrofitService.changeUser(
+            preferenceRepository.token,
+            telegram,
+            whatsApp,
+            vk
+        ) { response, code ->
+            if (code == 200) {
+                if (response!!.isDone == true) {
+                    loadProfile()
+                    Toast.makeText(
+                        context,
+                        "Данные успешно изменены.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }else {
+                    hideLoading()
+                    Toast.makeText(
+                        context,
+                        "Введённые данные некорректны.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } else {
+                hideLoading()
+                Toast.makeText(
+                    context,
+                    "$code Произошла непредвиденная ошибка.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 

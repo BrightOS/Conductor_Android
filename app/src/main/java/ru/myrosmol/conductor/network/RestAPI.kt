@@ -5,14 +5,17 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Query
 import ru.myrosmol.conductor.network.request.AuthRequest
+import ru.myrosmol.conductor.network.request.ChangeUserContactsRequest
 import ru.myrosmol.conductor.network.request.SendQuizzRequest
 import ru.myrosmol.conductor.network.response.AuthResponse
 import ru.myrosmol.conductor.network.response.DivisionResponse
 import ru.myrosmol.conductor.network.response.EventResponse
-import ru.myrosmol.conductor.network.response.MailCodeResponse
+import ru.myrosmol.conductor.network.response.IsDoneResponse
+import ru.myrosmol.conductor.network.response.ProductResponse
 import ru.myrosmol.conductor.network.response.ProfileResponse
 import ru.myrosmol.conductor.network.response.RoadmapResponse
 import ru.myrosmol.conductor.network.response.TaskResponse
@@ -23,7 +26,7 @@ interface RestAPI {
     fun auth(@Body authRequest: AuthRequest): Call<AuthResponse>
 
     @GET("auth.send_mail_code")
-    fun sendMailCode(@Query("mail") mail: String): Call<MailCodeResponse>
+    fun sendMailCode(@Query("mail") mail: String): Call<IsDoneResponse>
 
     @GET("me.my_roadmap")
     fun myRoadmap(@Header("token") token: String): Call<RoadmapResponse>
@@ -61,4 +64,20 @@ interface RestAPI {
 
     @GET("me.get_my_events")
     fun myEvents(@Header("token") token: String): Call<List<EventResponse>>
+
+    @GET("shop")
+    fun getAllProducts(@Header("token") token: String): Call<List<ProductResponse>>
+
+    @GET("shop.buy_product")
+    fun buyProduct(
+        @Header("token") token: String,
+        @Query("product_int_id") productId: Int
+    ): Call<IsDoneResponse>
+
+    @PATCH("me")
+    @Headers("Content-Type: application/json")
+    fun changeUserContacts(
+        @Header("token") token: String,
+        @Body changeUserContactsRequest: ChangeUserContactsRequest
+    ): Call<IsDoneResponse>
 }

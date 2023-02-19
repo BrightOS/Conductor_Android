@@ -13,6 +13,10 @@
         android:icon="@drawable/ic_event"
         android:title="@string/events"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/nav_shop"
+        android:icon="@drawable/ic_shopping_bag"
+        android:title="@string/shop" />
 
     <item
         android:id="@+id/nav_network"
